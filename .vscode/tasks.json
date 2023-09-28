@@ -9,6 +9,7 @@
         "-fcolor-diagnostics",
         "-fansi-escape-codes",
         "-std=c++17",
+        "-pthread",
         "-g",
         "${file}",
         "-o",
