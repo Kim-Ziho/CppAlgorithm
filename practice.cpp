@@ -3,22 +3,28 @@
 #include <thread>
 #include <mutex>
 
-void plus_func(int& a, std::mutex& m) {
-  for (int i = 0; i < 10000; i++) {
-    std::lock_guard<std::mutex> lock(m);
-    a++;
+class A {
+  int a;
+public:
+  A() : a(5) {};
+
+  void virtual dinner() {
+    std::cout << a << std::endl;
   }
-}
+};
+
+class B : public A {
+public:
+  B() : A() {};
+
+  void dinner() {
+    std::cout << "yam~" << std::endl;
+  }
+};
 
 int main() {
-  int result = 0;
-  std::mutex m;
-  std::vector<std::thread> v;
-  for (int i = 0; i < 4; i++) {
-    v.push_back(std::thread(plus_func, std::ref(result), std::ref(m)));
-  }
-  for (int i = 0; i < 4; i++) {
-    v[i].join();
-  }
-  std::cout << result << std::endl;
+  A a;
+  B b;
+  A* p_b = &b;
+  p_b->dinner();
 }
