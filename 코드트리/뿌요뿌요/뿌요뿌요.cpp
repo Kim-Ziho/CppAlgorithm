@@ -16,12 +16,12 @@ int direct_x[4] = { 0, 0, 1, -1 };
 int direct_y[4] = { 1, -1, 0, 0 };
 
 void input() {
-  cin >> N;`
-    for (int y = 0; y < N; y++) {
-      for (int x = 0; x < N; x++) {
-        cin >> arr[y][x];
-      }
+  cin >> N;
+  for (int y = 0; y < N; y++) {
+    for (int x = 0; x < N; x++) {
+      cin >> arr[y][x];
     }
+  }
 }
 
 void bfs(Node start) {
