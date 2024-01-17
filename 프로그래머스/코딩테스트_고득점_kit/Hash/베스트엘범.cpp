@@ -7,50 +7,49 @@
 
 using namespace std;
 
-struct string_compare {
-  bool operator()(const string& t, const string& v) const {
-    return t > v;
-  }
-};
-
 struct Music {
-  int id;
-  int plays;
+    int id;
+    int plays;
 
-  bool operator<(const Music& t) {
-    if (plays == t.plays) {
-      return id < t.id;
-    } else return plays > t.plays;
-  }
+    bool operator<(const Music& t) const {
+        if (plays == t.plays) {
+            return id < t.id;
+        } else return plays > t.plays;
+    }
 };
 
 struct Genre {
-  string genres;
-  int total_plays;
+    string name;
+    int total_plays;
 
-  bool operator<(const Genre& t) {
-    return total_plays > t.total_plays;
-  }
+    bool operator<(const Genre& t) const {
+        return total_plays > t.total_plays;
+    }
 };
 
 int main() {
-  vector<string> genres = { "classic", "pop", "classic1", "classic2", "pop1" };
-  vector<int> plays = { 500, 600, 150, 800, 2500 };
+    vector<string> genres = { "classic", "pop", "classic", "classic", "pop" };
+    vector<int> plays = { 500, 600, 150, 800, 2500 };
 
-  unordered_map<string, int> m;
-  unordered_map<string, vector<Music>> mv;
-  vector<Genre> genre_list;
+    unordered_map<string, int> genre_total_plays;
+    unordered_map<string, set<Music>> song_rank;
+    set<Genre> genre_rank;
 
-  for (int i = 0; i < genres.size(); i++) {
-    mv[genres[i]].push_back({ i, plays[i] });
-    if (m.find(genres[i]) != m.end()) {
-      m[genres[i]] += plays[i];
-    } else m[genres[i]] = plays[i];
-  }
+    for (int i = 0; i < genres.size(); i++) {
+        song_rank[genres[i]].insert({ i, plays[i] });
+        genre_total_plays[genres[i]] += plays[i];
+    }
 
-  sort(genres.begin(), genres.end(), greater<string>());
+    for (pair<string, int> pair : genre_total_plays) {
+        genre_rank.insert({ pair.first, pair.second });
+    }
 
-  for (auto a : genres) {
-    cout << a << ' ';
-  }
+    for (Genre genre : genre_rank) {
+        int cnt = 0;
+        for (Music music : song_rank[genre.name]) {
+            cout << music.id << ' ';
+            cnt++;
+            if (cnt == 2) break;
+        }
+    }
 }
